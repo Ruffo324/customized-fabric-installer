@@ -38,7 +38,8 @@ public class Main {
 		System.out.println("Loading Fabric Installer: " + Main.class.getPackage().getImplementationVersion());
 
 		HANDLERS.add(new ClientHandler());
-		HANDLERS.add(new ServerHandler());
+//		HANDLERS.add(new ServerHandler());
+
 
 		ArgumentParser argumentParser = ArgumentParser.create(args);
 		String command = argumentParser.getCommand().orElse(null);

@@ -23,30 +23,25 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 
 import net.fabricmc.installer.util.Utils;
 
 public class InstallerGui extends JFrame {
 	public static InstallerGui instance;
-
-	private JTabbedPane contentPane;
-
-	public InstallerGui() throws IOException {
-		initComponents();
-		setContentPane(contentPane);
+		public InstallerGui() throws IOException {
+		Main.HANDLERS.forEach(handler -> {
+			String tabTitle = Utils.BUNDLE.getString("tab." + handler.name().toLowerCase(Locale.ROOT));
+			setContentPane(handler.makePanel(this));
+		});
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ClassLoader.getSystemClassLoader().getResource("icon.png")));
 
 		Main.GAME_VERSION_META.load();
 		Main.LOADER_META.load();
+
 	}
 
 	public static void selectInstallLocation(Supplier<String> initalDir, Consumer<String> selectedDir) {
@@ -64,16 +59,16 @@ public class InstallerGui extends JFrame {
 	public static void start() throws IOException, ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, XMLStreamException {
 		//This will make people happy
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
 		InstallerGui dialog = new InstallerGui();
 		instance = dialog;
+
 		dialog.pack();
 		dialog.setTitle(Utils.BUNDLE.getString("installer.title"));
 		dialog.setLocationRelativeTo(null);
+
+
 		dialog.setVisible(true);
 	}
 
-	private void initComponents() {
-		contentPane = new JTabbedPane(JTabbedPane.TOP);
-		Main.HANDLERS.forEach(handler -> contentPane.addTab(Utils.BUNDLE.getString("tab." + handler.name().toLowerCase(Locale.ROOT)), handler.makePanel(this)));
-	}
 }
