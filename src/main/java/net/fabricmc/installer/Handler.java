@@ -124,10 +124,16 @@ public abstract class Handler implements InstallerProgress {
 
 		Main.LOADER_META.onComplete(versions -> {
 			int stableIndex = -1;
+			int preSelectedIndex = -1;
 
 			for (int i = 0; i < versions.size(); i++) {
 				MetaHandler.GameVersion version = versions.get(i);
 				loaderVersionComboBox.addItem(version.getVersion());
+
+				if(Objects.equals(Main.NiemesControllerConstants.VersionId, version.getVersion()))
+				{
+					preSelectedIndex = i;
+				}
 
 				if (version.isStable()) {
 					stableIndex = i;
@@ -137,6 +143,10 @@ public abstract class Handler implements InstallerProgress {
 			loaderVersionComboBox.addItem(SELECT_CUSTOM_ITEM);
 
 			//If no stable versions are found, default to the latest version
+			if(preSelectedIndex != -1){
+				stableIndex = preSelectedIndex;
+			}
+
 			if (stableIndex == -1) {
 				stableIndex = 0;
 			}

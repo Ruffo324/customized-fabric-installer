@@ -23,10 +23,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import mjson.Json;
+
 import net.fabricmc.installer.client.ClientHandler;
 import net.fabricmc.installer.server.ServerHandler;
 import net.fabricmc.installer.util.ArgumentParser;
 import net.fabricmc.installer.util.CrashDialog;
+import net.fabricmc.installer.util.LauncherMeta;
 import net.fabricmc.installer.util.MetaHandler;
 import net.fabricmc.installer.util.Reference;
 import net.fabricmc.installer.util.Utils;
@@ -35,9 +38,10 @@ public class Main {
 
 	@SuppressWarnings("SpellCheckingInspection")
 	public static class NiemesControllerConstants {
-
 		public static String InstallerTitleOverride = "Niemes Launcher"; // Utils.BUNDLE.getString("installer.title");
 		public static String ImageFileName = "placeholder_ruffo.png"; // Utils.BUNDLE.getString("installer.title");
+		public static String VersionId = "1.8.6";
+
 
 		public static class ShowInUI {
 			public static boolean Image = true;

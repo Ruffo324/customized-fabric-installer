@@ -72,6 +72,12 @@ public class LauncherMeta {
 			this.url = json.at("url").asString();
 		}
 
+		public Version(String id, String url)
+		{
+			this.id = id;
+			this.url = url;
+		}
+
 		public VersionMeta getVersionMeta() throws IOException {
 			if (versionMeta == null) {
 				URL url = new URL(this.url);
