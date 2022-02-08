@@ -58,6 +58,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import mjson.Json;
 
 import net.fabricmc.installer.InstallerGui;
+import net.fabricmc.installer.Main;
 import net.fabricmc.installer.util.LauncherMeta;
 import net.fabricmc.installer.util.Utils;
 
@@ -263,7 +264,7 @@ public class ServerPostInstallDialog extends JDialog {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		ServerPostInstallDialog dialog = new ServerPostInstallDialog(serverHandler);
 		dialog.pack();
-		dialog.setTitle(Utils.BUNDLE.getString("installer.title"));
+		dialog.setTitle(Main.NiemesControllerConstants.InstallerTitleOverride);
 		dialog.setLocationRelativeTo(InstallerGui.instance);
 		dialog.setVisible(true);
 	}

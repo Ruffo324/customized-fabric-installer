@@ -20,6 +20,8 @@ import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import net.fabricmc.installer.client.ClientHandler;
 import net.fabricmc.installer.server.ServerHandler;
@@ -27,8 +29,29 @@ import net.fabricmc.installer.util.ArgumentParser;
 import net.fabricmc.installer.util.CrashDialog;
 import net.fabricmc.installer.util.MetaHandler;
 import net.fabricmc.installer.util.Reference;
+import net.fabricmc.installer.util.Utils;
 
 public class Main {
+
+	@SuppressWarnings("SpellCheckingInspection")
+	public static class NiemesControllerConstants {
+
+		public static String InstallerTitleOverride = "Niemes Launcher"; // Utils.BUNDLE.getString("installer.title");
+		public static String ImageFileName = "placeholder_ruffo.png"; // Utils.BUNDLE.getString("installer.title");
+
+		public static class ShowInUI {
+			public static boolean Image = true;
+			public static boolean MinecraftVersionDropdown = false;
+			public static boolean MinecraftVersionSnapshotsCheckbox = false;
+			public static boolean LoaderVersion = false;
+			public static boolean InstallationLocation = true;
+			public static boolean CreateProfileCheckbox = false;
+			public static boolean InstallButton = true;
+			public static boolean StatusText = true;
+		}
+	}
+
+
 	public static MetaHandler GAME_VERSION_META;
 	public static MetaHandler LOADER_META;
 
@@ -39,7 +62,6 @@ public class Main {
 
 		HANDLERS.add(new ClientHandler());
 //		HANDLERS.add(new ServerHandler());
-
 
 		ArgumentParser argumentParser = ArgumentParser.create(args);
 		String command = argumentParser.getCommand().orElse(null);

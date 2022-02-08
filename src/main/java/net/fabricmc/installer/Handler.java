@@ -16,27 +16,18 @@
 
 package net.fabricmc.installer;
 
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
+import java.util.Objects;
 import java.util.function.Consumer;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import net.fabricmc.installer.util.ArgumentParser;
@@ -50,11 +41,10 @@ public abstract class Handler implements InstallerProgress {
 	public JButton buttonInstall;
 
 	public JComboBox<String> gameVersionComboBox;
-	private JComboBox<String> loaderVersionComboBox;
+	public JComboBox<String> loaderVersionComboBox;
 	public JTextField installLocation;
 	public JButton selectFolderButton;
 	public JLabel statusLabel;
-
 	public JCheckBox snapshotCheckBox;
 
 	private JPanel pane;
@@ -72,11 +62,17 @@ public abstract class Handler implements InstallerProgress {
 
 	public abstract void setupPane2(JPanel pane, InstallerGui installerGui);
 
+	public abstract void setupPane3(JPanel pane, InstallerGui installerGui);
+
 	public JPanel makePanel(InstallerGui installerGui) {
 		pane = new JPanel();
 		pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
 
+
 		setupPane1(pane, installerGui);
+
+		addRow(pane, p -> p.add(new JLabel(new ImageIcon(Objects.requireNonNull(getImage())))),
+				Main.NiemesControllerConstants.ShowInUI.Image);
 
 		addRow(pane, jPanel -> {
 			jPanel.add(new JLabel(Utils.BUNDLE.getString("prompt.game.version")));
@@ -88,7 +84,10 @@ public abstract class Handler implements InstallerProgress {
 					updateGameVersions();
 				}
 			});
-		});
+
+			gameVersionComboBox.setVisible(Main.NiemesControllerConstants.ShowInUI.MinecraftVersionSnapshotsCheckbox);
+
+		}, Main.NiemesControllerConstants.ShowInUI.MinecraftVersionDropdown);
 
 		Main.GAME_VERSION_META.onComplete(versions -> {
 			updateGameVersions();
@@ -97,7 +96,7 @@ public abstract class Handler implements InstallerProgress {
 		addRow(pane, jPanel -> {
 			jPanel.add(new JLabel(Utils.BUNDLE.getString("prompt.loader.version")));
 			jPanel.add(loaderVersionComboBox = new JComboBox<>());
-		});
+		}, Main.NiemesControllerConstants.ShowInUI.LoaderVersion);
 
 		addRow(pane, jPanel -> {
 			jPanel.add(new JLabel(Utils.BUNDLE.getString("prompt.select.location")));
@@ -106,14 +105,14 @@ public abstract class Handler implements InstallerProgress {
 
 			selectFolderButton.setText("...");
 			selectFolderButton.addActionListener(e -> InstallerGui.selectInstallLocation(() -> installLocation.getText(), s -> installLocation.setText(s)));
-		});
+		}, Main.NiemesControllerConstants.ShowInUI.InstallationLocation);
 
 		setupPane2(pane, installerGui);
 
 		addRow(pane, jPanel -> {
 			jPanel.add(statusLabel = new JLabel());
 			statusLabel.setText(Utils.BUNDLE.getString("prompt.loading.versions"));
-		});
+		}, Main.NiemesControllerConstants.ShowInUI.StatusText);
 
 		addRow(pane, jPanel -> {
 			jPanel.add(buttonInstall = new JButton(Utils.BUNDLE.getString("prompt.install")));
@@ -121,7 +120,7 @@ public abstract class Handler implements InstallerProgress {
 				buttonInstall.setEnabled(false);
 				install();
 			});
-		});
+		}, Main.NiemesControllerConstants.ShowInUI.InstallButton);
 
 		Main.LOADER_META.onComplete(versions -> {
 			int stableIndex = -1;
@@ -146,8 +145,21 @@ public abstract class Handler implements InstallerProgress {
 			statusLabel.setText(Utils.BUNDLE.getString("prompt.ready.install"));
 		});
 
+		setupPane3(pane, installerGui);
 		return pane;
 	}
+
+	private BufferedImage getImage() {
+		try {
+			return ImageIO.read(Objects.requireNonNull(getClass()
+					.getClassLoader()
+					.getResource(Main.NiemesControllerConstants.ImageFileName)));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 
 	private void updateGameVersions() {
 		gameVersionComboBox.removeAllItems();
@@ -207,7 +219,7 @@ public abstract class Handler implements InstallerProgress {
 		return String.format(
 				"font-family:%s;font-weight:%s;font-size:%dpt;background-color: rgb(%d,%d,%d);",
 				font.getFamily(), (font.isBold() ? "bold" : "normal"), font.getSize(), color.getRed(), color.getGreen(), color.getBlue()
-				);
+		);
 	}
 
 	@Override
@@ -236,10 +248,12 @@ public abstract class Handler implements InstallerProgress {
 				JOptionPane.ERROR_MESSAGE);
 	}
 
-	protected void addRow(Container parent, Consumer<JPanel> consumer) {
+	protected void addRow(Container parent, Consumer<JPanel> consumer, boolean visible) {
 		JPanel panel = new JPanel(new FlowLayout());
 		consumer.accept(panel);
 		parent.add(panel);
+
+		panel.setVisible(visible);
 	}
 
 	protected String getGameVersion(ArgumentParser args) {

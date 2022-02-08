@@ -35,6 +35,7 @@ import javax.swing.event.HyperlinkEvent;
 import net.fabricmc.installer.Handler;
 import net.fabricmc.installer.InstallerGui;
 import net.fabricmc.installer.LoaderVersion;
+import net.fabricmc.installer.Main;
 import net.fabricmc.installer.launcher.MojangLauncherHelperWrapper;
 import net.fabricmc.installer.util.ArgumentParser;
 import net.fabricmc.installer.util.InstallerProgress;
@@ -141,7 +142,7 @@ public class ClientHandler extends Handler {
 
 		int result = JOptionPane.showOptionDialog(null,
 				Utils.BUNDLE.getString("prompt.launcher.type.body"),
-				Utils.BUNDLE.getString("installer.title"),
+				Main.NiemesControllerConstants.InstallerTitleOverride,
 				JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				null,
@@ -216,8 +217,12 @@ public class ClientHandler extends Handler {
 
 	@Override
 	public void setupPane2(JPanel pane, InstallerGui installerGui) {
-		addRow(pane, jPanel -> jPanel.add(createProfile = new JCheckBox(Utils.BUNDLE.getString("option.create.profile"), true)));
+		addRow(pane, jPanel -> jPanel.add(createProfile = new JCheckBox(Utils.BUNDLE.getString("option.create.profile"), true)),Main.NiemesControllerConstants.ShowInUI.CreateProfileCheckbox);
 
 		installLocation.setText(Utils.findDefaultInstallDir().toString());
+	}
+
+	@Override
+	public void setupPane3(JPanel pane, InstallerGui installerGui) {
 	}
 }

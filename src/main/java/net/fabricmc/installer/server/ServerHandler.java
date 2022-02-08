@@ -91,4 +91,9 @@ public class ServerHandler extends Handler {
 	public void setupPane2(JPanel pane, InstallerGui installerGui) {
 		installLocation.setText(Paths.get(".").toAbsolutePath().normalize().toString());
 	}
+
+	@Override
+	public void setupPane3(JPanel pane, InstallerGui installerGui) {
+		// Nothing to do here.
+	}
 }

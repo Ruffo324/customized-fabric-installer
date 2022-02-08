@@ -41,7 +41,6 @@ public class InstallerGui extends JFrame {
 
 		Main.GAME_VERSION_META.load();
 		Main.LOADER_META.load();
-
 	}
 
 	public static void selectInstallLocation(Supplier<String> initalDir, Consumer<String> selectedDir) {
@@ -64,7 +63,7 @@ public class InstallerGui extends JFrame {
 		instance = dialog;
 
 		dialog.pack();
-		dialog.setTitle(Utils.BUNDLE.getString("installer.title"));
+		dialog.setTitle(Main.NiemesControllerConstants.InstallerTitleOverride);
 		dialog.setLocationRelativeTo(null);
 
 

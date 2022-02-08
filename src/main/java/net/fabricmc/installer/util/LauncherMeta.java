@@ -49,12 +49,10 @@ public class LauncherMeta {
 		String str = Utils.readTextFile(url);
 		Json json = Json.read(str);
 
-		List<Version> versions = json.at("versions").asJsonList()
+		return json.at("versions").asJsonList()
 				.stream()
 				.map(Version::new)
 				.collect(Collectors.toList());
-
-		return versions;
 	}
 
 	public final List<Version> versions;
@@ -87,6 +85,10 @@ public class LauncherMeta {
 	}
 
 	public Version getVersion(String version) {
-		return versions.stream().filter(v -> v.id.equals(version)).findFirst().orElse(null);
+		return versions
+				.stream()
+				.filter(v -> v.id.equals(version))
+				.findFirst()
+				.orElse(null);
 	}
 }
