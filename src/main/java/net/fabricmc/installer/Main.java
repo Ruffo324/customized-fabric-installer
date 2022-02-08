@@ -20,19 +20,12 @@ import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import mjson.Json;
 
 import net.fabricmc.installer.client.ClientHandler;
-import net.fabricmc.installer.server.ServerHandler;
 import net.fabricmc.installer.util.ArgumentParser;
 import net.fabricmc.installer.util.CrashDialog;
-import net.fabricmc.installer.util.LauncherMeta;
 import net.fabricmc.installer.util.MetaHandler;
 import net.fabricmc.installer.util.Reference;
-import net.fabricmc.installer.util.Utils;
 
 public class Main {
 
