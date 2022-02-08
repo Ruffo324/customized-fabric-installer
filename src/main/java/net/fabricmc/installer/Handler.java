@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -89,9 +88,7 @@ public abstract class Handler implements InstallerProgress {
 
 		}, Main.NiemesControllerConstants.ShowInUI.MinecraftVersionDropdown);
 
-		Main.GAME_VERSION_META.onComplete(versions -> {
-			updateGameVersions();
-		});
+		Main.GAME_VERSION_META.onComplete(versions -> updateGameVersions());
 
 		addRow(pane, jPanel -> {
 			jPanel.add(new JLabel(Utils.BUNDLE.getString("prompt.loader.version")));
@@ -188,6 +185,7 @@ public abstract class Handler implements InstallerProgress {
 	protected LoaderVersion queryLoaderVersion() {
 		String ret = (String) loaderVersionComboBox.getSelectedItem();
 
+		assert ret != null;
 		if (!ret.equals(SELECT_CUSTOM_ITEM)) {
 			return new LoaderVersion(ret);
 		} else {
