@@ -85,7 +85,7 @@ public abstract class Handler implements InstallerProgress {
 				}
 			});
 
-			gameVersionComboBox.setVisible(Main.NiemesControllerConstants.ShowInUI.MinecraftVersionSnapshotsCheckbox);
+			snapshotCheckBox.setVisible(Main.NiemesControllerConstants.ShowInUI.MinecraftVersionSnapshotsCheckbox);
 
 		}, Main.NiemesControllerConstants.ShowInUI.MinecraftVersionDropdown);
 

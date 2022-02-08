@@ -40,12 +40,12 @@ public class Main {
 	public static class NiemesControllerConstants {
 		public static String InstallerTitleOverride = "Niemes Launcher"; // Utils.BUNDLE.getString("installer.title");
 		public static String ImageFileName = "placeholder_ruffo.png"; // Utils.BUNDLE.getString("installer.title");
-		public static String VersionId = "1.8.6";
 
+		public static String VersionId = "1.8.6"; // SEE https://launchermeta.mojang.com/mc/game/version_manifest_v2.json
 
 		public static class ShowInUI {
 			public static boolean Image = true;
-			public static boolean MinecraftVersionDropdown = false;
+			public static boolean MinecraftVersionDropdown = true;
 			public static boolean MinecraftVersionSnapshotsCheckbox = false;
 			public static boolean LoaderVersion = false;
 			public static boolean InstallationLocation = true;
